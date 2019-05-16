@@ -11,7 +11,7 @@ _VERSION = '1.1.1'
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = 'spotcast'
-CONF_DEVICE_NAME = 'device_name'
+CONF_DEVICE_NAME = 'entity_id'
 CONF_SPOTIFY_URI = 'uri'
 CONF_ACCOUNTS = 'accounts'
 CONF_SPOTIFY_ACCOUNT = 'account'
@@ -87,9 +87,9 @@ def setup(hass, config):
 
         from pychromecast.controllers.spotify import SpotifyController
         import spotipy
-
+        
         uri = call.data.get(CONF_SPOTIFY_URI)
-        device_name = call.data.get(CONF_DEVICE_NAME)
+        device_name = hass.states.get(call.data.get(CONF_DEVICE_NAME)).attributes.get('friendly_name')
         transfer_playback = call.data.get(CONF_TRANSFER_PLAYBACK)
         _LOGGER.info('Transfer playback: %s', transfer_playback)
         _LOGGER.info('Starting spotify on %s', device_name)
